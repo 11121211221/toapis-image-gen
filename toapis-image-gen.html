@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToAPIs - GPT-Image-2-VIP 图像生成</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f0f; color: #e0e0e0; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 24px 32px; border-bottom: 1px solid #333; }
+.header h1 { font-size: 22px; font-weight: 600; color: #fff; }
+.header p { font-size: 13px; color: #888; margin-top: 4px; }
+.container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+.card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.card-title { font-size: 15px; font-weight: 600; color: #ccc; margin-bottom: 16px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; color: #999; margin-bottom: 6px; }
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; background: #111; border: 1px solid #333; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; outline: none; transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #4a9eff; }
+.form-group textarea { resize: vertical; min-height: 100px; font-family: inherit; }
+.form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+.api-key-row { display: flex; gap: 12px; align-items: center; }
+.api-key-row input { flex: 1; }
+.btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: #4a9eff; color: #fff; }
+.btn-primary:hover { background: #3a8eef; }
+.btn-primary:disabled { background: #333; color: #666; cursor: not-allowed; }
+.btn-secondary { background: #2a2a2a; color: #ccc; border: 1px solid #444; }
+.btn-secondary:hover { background: #333; }
+.upload-zone { border: 2px dashed #333; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+.upload-zone:hover { border-color: #4a9eff; }
+.upload-zone p { font-size: 13px; color: #666; }
+.upload-zone .icon { font-size: 28px; margin-bottom: 8px; }
+.preview-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.preview-item { position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 1px solid #333; }
+.preview-item img { width: 100%; height: 100%; object-fit: cover; }
+.preview-item .remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.status-bar { background: #111; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: none; }
+.status-bar.active { display: block; }
+.status-text { font-size: 13px; color: #999; margin-bottom: 8px; }
+.progress-bar { height: 4px; background: #222; border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: #4a9eff; transition: width 0.3s; width: 0; }
+.result-area { display: none; }
+.result-area.active { display: block; }
+.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.result-card { background: #111; border: 1px solid #2a2a2a; border-radius: 12px; overflow: hidden; }
+.result-card img { width: 100%; display: block; cursor: pointer; transition: transform 0.2s; }
+.result-card img:hover { transform: scale(1.02); }
+.result-card .actions { padding: 12px; display: flex; gap: 8px; }
+.result-card .actions a { font-size: 12px; color: #4a9eff; text-decoration: none; }
+.result-card .actions a:hover { text-decoration: underline; }
+.error-msg { background: #2a1515; border: 1px solid #5a2020; border-radius: 8px; padding: 12px 16px; color: #ff6b6b; font-size: 13px; display: none; margin-bottom: 16px; }
+.error-msg.active { display: block; }
+.token-toggle { cursor: pointer; padding: 10px; background: #111; border: 1px solid #333; border-radius: 8px; font-size: 14px; color: #999; white-space: nowrap; }
+@media (max-width: 640px) {
+  .form-row, .form-row-4 { grid-template-columns: 1fr; }
+  .container { padding: 16px 12px; }
+}
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 24px; }
+.modal-overlay.active { display: flex; }
+.modal-overlay img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+.modal-close { position: fixed; top: 16px; right: 24px; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 24px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 1001; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>ToAPIs GPT-Image-2-VIP</h1>
+  <p>使用 GPT-Image-2-VIP 模型生成高质量图像，支持文生图和图生图</p>
+  <p style="margin-top:8px;padding:8px 12px;background:rgba(74,158,255,0.1);border-radius:6px;font-size:12px;color:#4a9eff">⚠ 请通过本地服务器访问（运行 start-server.bat），然后打开 http://localhost:8080/toapis-image-gen.html</p>
+</div>
+
+<div class="container">
+  <div class="error-msg" id="errorMsg"></div>
+
+  <div class="card">
+    <div class="card-title">API 配置</div>
+    <div class="form-group">
+      <label>API Key</label>
+      <div class="api-key-row">
+        <input type="password" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+        <button class="token-toggle" onclick="toggleApiKey()" title="显示/隐藏">👁</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">图像设置</div>
+    <div class="form-group">
+      <label>提示词 (Prompt)</label>
+      <textarea id="prompt" placeholder="描述你想要生成的图像内容...&#10;例如：未来城市夜景，霓虹灯，电影感构图"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>宽高比</label>
+        <select id="size">
+          <option value="1:1">1:1 正方形</option>
+          <option value="3:2">3:2 横版</option>
+          <option value="2:3">2:3 竖版</option>
+          <option value="4:3">4:3 横版</option>
+          <option value="3:4">3:4 竖版</option>
+          <option value="5:4">5:4 横版</option>
+          <option value="4:5">4:5 竖版</option>
+          <option value="16:9" selected>16:9 宽屏</option>
+          <option value="9:16">9:16 竖屏</option>
+          <option value="2:1">2:1 超宽</option>
+          <option value="1:2">1:2 超高</option>
+          <option value="21:9">21:9 超宽屏</option>
+          <option value="9:21">9:21 超高屏</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>分辨率</label>
+        <select id="resolution">
+          <option value="1k">1K - 标准</option>
+          <option value="2k" selected>2K - 高清</option>
+          <option value="4k">4K - 超高清</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>质量</label>
+        <select id="quality">
+          <option value="low">Low - 快速省钱</option>
+          <option value="medium" selected>Medium - 平衡</option>
+          <option value="high">High - 最高质量</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>生成数量</label>
+        <select id="n">
+          <option value="1" selected>1 张</option>
+          <option value="2">2 张</option>
+          <option value="3">3 张</option>
+          <option value="4">4 张</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">参考图 (可选，用于图生图)</div>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="icon">📁</div>
+      <p>点击或拖拽图片到此处上传 (最多 5 张)</p>
+      <p style="margin-top:4px;font-size:11px;color:#555">支持 JPEG / PNG / WebP / GIF，最大 10MB</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/gif" multiple style="display:none">
+    <div class="preview-grid" id="previewGrid"></div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px">
+    <button class="btn btn-primary" id="generateBtn" onclick="generate()">生成图像</button>
+  </div>
+
+  <div class="status-bar" id="statusBar">
+    <div class="status-text" id="statusText">准备中...</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="result-area" id="resultArea">
+    <div class="card">
+      <div class="card-title">生成结果</div>
+      <div class="result-grid" id="resultGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="imageModal" onclick="closeModal()">
+  <button class="modal-close" onclick="closeModal()">&times;</button>
+  <img id="modalImg" src="">
+</div>
+
+<script>
+const API_BASE = 'https://toapis.com';
+let uploadedFiles = [];
+let uploadedUrls = [];
+let pollingTimer = null;
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('active');
+  setTimeout(() => el.classList.remove('active'), 6000);
+}
+
+function toggleApiKey() {
+  const el = document.getElementById('apiKey');
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+// Restore saved API key
+const savedKey = localStorage.getItem('toapis_key');
+if (savedKey) document.getElementById('apiKey').value = savedKey;
+
+document.getElementById('apiKey').addEventListener('input', e => {
+  localStorage.setItem('toapis_key', e.target.value.trim());
+});
+
+// File upload
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = '#4a9eff'; });
+uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = '#333'; });
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.style.borderColor = '#333';
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+function handleFiles(files) {
+  for (const f of files) {
+    if (uploadedFiles.length >= 5) { showError('最多上传 5 张参考图'); break; }
+    if (f.size > 10 * 1024 * 1024) { showError(`${f.name} 超过 10MB 限制`); continue; }
+    uploadedFiles.push(f);
+  }
+  renderPreviews();
+  fileInput.value = '';
+}
+
+function renderPreviews() {
+  const grid = document.getElementById('previewGrid');
+  grid.innerHTML = '';
+  uploadedFiles.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    const url = URL.createObjectURL(f);
+    div.innerHTML = `<img src="${url}"><button class="remove" onclick="removeFile(${i})">&times;</button>`;
+    grid.appendChild(div);
+  });
+}
+
+function removeFile(i) {
+  uploadedFiles.splice(i, 1);
+  renderPreviews();
+}
+
+async function uploadImages() {
+  const urls = [];
+  for (const f of uploadedFiles) {
+    const formData = new FormData();
+    formData.append('file', f);
+    const resp = await fetch(`${API_BASE}/v1/uploads/images`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${document.getElementById('apiKey').value.trim()}` },
+      body: formData
+    });
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.message || '图片上传失败');
+    urls.push(data.data.url);
+  }
+  return urls;
+}
+
+function setStatus(text, progress) {
+  const bar = document.getElementById('statusBar');
+  const textEl = document.getElementById('statusText');
+  const fill = document.getElementById('progressFill');
+  bar.classList.add('active');
+  textEl.textContent = text;
+  fill.style.width = (progress || 0) + '%';
+}
+
+function hideStatus() {
+  document.getElementById('statusBar').classList.remove('active');
+}
+
+async function pollTask(taskId) {
+  const maxAttempts = 60;
+  const interval = 3000;
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise(r => setTimeout(r, interval));
+    const resp = await fetch(`${API_BASE}/v1/images/generations/${taskId}`, {
+      headers: { 'Authorization': `Bearer ${document.getElementById('apiKey').value.trim()}` }
+    });
+    const data = await resp.json();
+
+    if (data.error) throw new Error(data.error.message || '查询任务状态失败');
+
+    setStatus(`状态: ${data.status} (${data.progress || 0}%)`, data.progress || 0);
+
+    if (data.status === 'completed') {
+      const results = (data.result?.data || []).map(d => d.url);
+      displayResults(results);
+      hideStatus();
+      return;
+    }
+    if (data.status === 'failed') {
+      throw new Error(data.error?.message || '生成失败');
+    }
+  }
+  throw new Error('任务超时 (120 秒)');
+}
+
+function displayResults(urls) {
+  const area = document.getElementById('resultArea');
+  const grid = document.getElementById('resultGrid');
+  grid.innerHTML = '';
+  urls.forEach((url, i) => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <img src="${url}" onclick="openModal('${url}')" loading="lazy">
+      <div class="actions">
+        <a href="${url}" target="_blank" download>下载图片</a>
+        <a href="javascript:void(0)" onclick="copyUrl('${url}')">复制链接</a>
+      </div>`;
+    grid.appendChild(card);
+  });
+  area.classList.add('active');
+}
+
+function openModal(url) {
+  document.getElementById('modalImg').src = url;
+  document.getElementById('imageModal').classList.add('active');
+}
+function closeModal() {
+  document.getElementById('imageModal').classList.remove('active');
+}
+
+async function copyUrl(url) {
+  try {
+    await navigator.clipboard.writeText(url);
+    alert('链接已复制');
+  } catch { fallbackCopy(url); }
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta);
+  ta.select(); document.execCommand('copy');
+  document.body.removeChild(ta);
+  alert('链接已复制');
+}
+
+async function generate() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const prompt = document.getElementById('prompt').value.trim();
+
+  if (!apiKey) return showError('请输入 API Key');
+  if (!prompt) return showError('请输入提示词');
+
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.textContent = '生成中...';
+  document.getElementById('resultArea').classList.remove('active');
+
+  try {
+    setStatus('正在上传参考图...', 0);
+    let imageUrls = [];
+    if (uploadedFiles.length > 0) {
+      imageUrls = await uploadImages();
+    }
+
+    const body = {
+      model: 'gpt-image-2-vip',
+      prompt,
+      size: document.getElementById('size').value,
+      resolution: document.getElementById('resolution').value,
+      quality: document.getElementById('quality').value,
+      n: parseInt(document.getElementById('n').value),
+      response_format: 'url'
+    };
+    if (imageUrls.length > 0) body.image_urls = imageUrls;
+
+    setStatus('正在提交生成任务...', 10);
+    const resp = await fetch(`${API_BASE}/v1/images/generations`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message || '请求失败');
+    if (!data.id) throw new Error('未获取到任务 ID');
+
+    setStatus(`任务已提交，正在生成... (ID: ${data.id})`, 20);
+    await pollTask(data.id);
+
+  } catch (err) {
+    showError(err.message);
+    hideStatus();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '生成图像';
+  }
+}
+
+// Keyboard shortcut: Ctrl+Enter to generate
+document.getElementById('prompt').addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'Enter') generate();
+});
+</script>
+</body>
+</html>
