@@ -12,7 +12,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .header p { font-size: 13px; color: #888; margin-top: 4px; }
 .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
 .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-.card-title { font-size: 15px; font-weight: 600; color: #ccc; margin-bottom: 16px; }
+.card-title { font-size: 15px; font-weight: 600; color: #ccc; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+.card-title .badge { font-size: 12px; background: #333; color: #999; padding: 2px 8px; border-radius: 10px; font-weight: 400; }
 .form-group { margin-bottom: 16px; }
 .form-group label { display: block; font-size: 13px; color: #999; margin-bottom: 6px; }
 .form-group input, .form-group textarea, .form-group select {
@@ -22,15 +23,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .form-group textarea { resize: vertical; min-height: 100px; font-family: inherit; }
 .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-.form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
 .api-key-row { display: flex; gap: 12px; align-items: center; }
 .api-key-row input { flex: 1; }
 .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
 .btn-primary { background: #4a9eff; color: #fff; }
 .btn-primary:hover { background: #3a8eef; }
-.btn-primary:disabled { background: #333; color: #666; cursor: not-allowed; }
 .btn-secondary { background: #2a2a2a; color: #ccc; border: 1px solid #444; }
 .btn-secondary:hover { background: #333; }
+.btn-danger { background: #5a2020; color: #ff6b6b; border: 1px solid #7a3030; }
+.btn-danger:hover { background: #6a2525; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
 .upload-zone { border: 2px dashed #333; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
 .upload-zone:hover { border-color: #4a9eff; }
 .upload-zone p { font-size: 13px; color: #666; }
@@ -39,31 +41,38 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .preview-item { position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 1px solid #333; }
 .preview-item img { width: 100%; height: 100%; object-fit: cover; }
 .preview-item .remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.status-bar { background: #111; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: none; }
-.status-bar.active { display: block; }
-.status-text { font-size: 13px; color: #999; margin-bottom: 8px; }
-.progress-bar { height: 4px; background: #222; border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: #4a9eff; transition: width 0.3s; width: 0; }
-.result-area { display: none; }
-.result-area.active { display: block; }
-.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-.result-card { background: #111; border: 1px solid #2a2a2a; border-radius: 12px; overflow: hidden; }
-.result-card img { width: 100%; display: block; cursor: pointer; transition: transform 0.2s; }
-.result-card img:hover { transform: scale(1.02); }
-.result-card .actions { padding: 12px; display: flex; gap: 8px; }
-.result-card .actions a { font-size: 12px; color: #4a9eff; text-decoration: none; }
-.result-card .actions a:hover { text-decoration: underline; }
 .error-msg { background: #2a1515; border: 1px solid #5a2020; border-radius: 8px; padding: 12px 16px; color: #ff6b6b; font-size: 13px; display: none; margin-bottom: 16px; }
 .error-msg.active { display: block; }
 .token-toggle { cursor: pointer; padding: 10px; background: #111; border: 1px solid #333; border-radius: 8px; font-size: 14px; color: #999; white-space: nowrap; }
-@media (max-width: 640px) {
-  .form-row, .form-row-4 { grid-template-columns: 1fr; }
-  .container { padding: 16px 12px; }
-}
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 24px; }
 .modal-overlay.active { display: flex; }
 .modal-overlay img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
 .modal-close { position: fixed; top: 16px; right: 24px; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 24px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 1001; }
+
+.history-list { display: flex; flex-direction: column; gap: 12px; }
+.history-item { background: #111; border: 1px solid #2a2a2a; border-radius: 10px; padding: 16px; transition: border-color 0.2s; }
+.history-item:hover { border-color: #444; }
+.history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.history-prompt { font-size: 13px; color: #ccc; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 12px; }
+.history-status { font-size: 11px; padding: 3px 10px; border-radius: 12px; white-space: nowrap; flex-shrink: 0; }
+.history-status.queued { background: #2a2a2a; color: #888; }
+.history-status.in_progress { background: #1a2a3a; color: #4a9eff; }
+.history-status.completed { background: #1a2a1a; color: #5abf5a; }
+.history-status.failed { background: #2a1515; color: #ff6b6b; }
+.history-meta { font-size: 11px; color: #555; margin-bottom: 10px; }
+.history-progress { height: 3px; background: #222; border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
+.history-progress-fill { height: 100%; background: #4a9eff; transition: width 0.3s; }
+.history-images { display: flex; flex-wrap: wrap; gap: 8px; }
+.history-images img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 1px solid #2a2a2a; transition: transform 0.2s; }
+.history-images img:hover { transform: scale(1.05); }
+.history-actions { display: flex; gap: 6px; margin-top: 10px; }
+.history-error { font-size: 12px; color: #ff6b6b; background: #2a1515; padding: 8px 12px; border-radius: 6px; margin-top: 8px; }
+.empty-hint { text-align: center; padding: 40px 20px; color: #555; font-size: 14px; }
+@media (max-width: 640px) {
+  .form-row { grid-template-columns: 1fr; }
+  .container { padding: 16px 12px; }
+  .history-images img { width: 80px; height: 80px; }
+}
 </style>
 </head>
 <body>
@@ -71,7 +80,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 <div class="header">
   <h1>ToAPIs GPT-Image-2-VIP</h1>
   <p>使用 GPT-Image-2-VIP 模型生成高质量图像，支持文生图和图生图</p>
-  <p style="margin-top:8px;padding:8px 12px;background:rgba(74,158,255,0.1);border-radius:6px;font-size:12px;color:#4a9eff">⚠ 请通过本地服务器访问（运行 start-server.bat），然后打开 http://localhost:8080/toapis-image-gen.html</p>
 </div>
 
 <div class="container">
@@ -158,15 +166,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
     <button class="btn btn-primary" id="generateBtn" onclick="generate()">生成图像</button>
   </div>
 
-  <div class="status-bar" id="statusBar">
-    <div class="status-text" id="statusText">准备中...</div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  </div>
-
-  <div class="result-area" id="resultArea">
-    <div class="card">
-      <div class="card-title">生成结果</div>
-      <div class="result-grid" id="resultGrid"></div>
+  <div class="card" style="margin-top:24px">
+    <div class="card-title">
+      生成记录
+      <span class="badge" id="historyCount">0</span>
+    </div>
+    <div id="historyList" class="history-list">
+      <div class="empty-hint">暂无记录，生成图像后会自动出现在这里</div>
+    </div>
+    <div style="text-align:right;margin-top:12px;display:none" id="clearAllWrap">
+      <button class="btn btn-danger btn-sm" onclick="clearHistory()">清空全部记录</button>
     </div>
   </div>
 </div>
@@ -179,8 +188,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 <script>
 const API_BASE = 'https://toapis.com';
 let uploadedFiles = [];
-let uploadedUrls = [];
-let pollingTimer = null;
+let tasks = {};
+let pollers = {};
 
 function showError(msg) {
   const el = document.getElementById('errorMsg');
@@ -194,25 +203,17 @@ function toggleApiKey() {
   el.type = el.type === 'password' ? 'text' : 'password';
 }
 
-// Restore saved API key
 const savedKey = localStorage.getItem('toapis_key');
 if (savedKey) document.getElementById('apiKey').value = savedKey;
-
 document.getElementById('apiKey').addEventListener('input', e => {
   localStorage.setItem('toapis_key', e.target.value.trim());
 });
 
-// File upload
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
-
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = '#4a9eff'; });
 uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = '#333'; });
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault();
-  uploadZone.style.borderColor = '#333';
-  handleFiles(e.dataTransfer.files);
-});
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.style.borderColor = '#333'; handleFiles(e.dataTransfer.files); });
 fileInput.addEventListener('change', e => handleFiles(e.target.files));
 
 function handleFiles(files) {
@@ -231,16 +232,12 @@ function renderPreviews() {
   uploadedFiles.forEach((f, i) => {
     const div = document.createElement('div');
     div.className = 'preview-item';
-    const url = URL.createObjectURL(f);
-    div.innerHTML = `<img src="${url}"><button class="remove" onclick="removeFile(${i})">&times;</button>`;
+    div.innerHTML = `<img src="${URL.createObjectURL(f)}"><button class="remove" onclick="removeFile(${i})">&times;</button>`;
     grid.appendChild(div);
   });
 }
 
-function removeFile(i) {
-  uploadedFiles.splice(i, 1);
-  renderPreviews();
-}
+function removeFile(i) { uploadedFiles.splice(i, 1); renderPreviews(); }
 
 async function uploadImages() {
   const urls = [];
@@ -259,17 +256,96 @@ async function uploadImages() {
   return urls;
 }
 
-function setStatus(text, progress) {
-  const bar = document.getElementById('statusBar');
-  const textEl = document.getElementById('statusText');
-  const fill = document.getElementById('progressFill');
-  bar.classList.add('active');
-  textEl.textContent = text;
-  fill.style.width = (progress || 0) + '%';
+function saveTasks() {
+  const store = {};
+  for (const [id, t] of Object.entries(tasks)) {
+    store[id] = { ...t };
+  }
+  localStorage.setItem('toapis_history', JSON.stringify(store));
 }
 
-function hideStatus() {
-  document.getElementById('statusBar').classList.remove('active');
+function loadTasks() {
+  try {
+    const raw = localStorage.getItem('toapis_history');
+    if (raw) tasks = JSON.parse(raw);
+  } catch { tasks = {}; }
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const countEl = document.getElementById('historyCount');
+  const clearWrap = document.getElementById('clearAllWrap');
+  const entries = Object.values(tasks).sort((a, b) => b.createdAt - a.createdAt);
+  countEl.textContent = entries.length;
+  clearWrap.style.display = entries.length > 0 ? 'block' : 'none';
+
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="empty-hint">暂无记录，生成图像后会自动出现在这里</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  entries.forEach(task => {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.id = `task-${task.id}`;
+
+    const statusLabels = { queued: '排队中', in_progress: '生成中', completed: '已完成', failed: '失败' };
+    const time = new Date(task.createdAt).toLocaleString('zh-CN');
+    const meta = [task.size, task.resolution, task.quality, `${task.n}张`].join(' · ');
+
+    let body = `
+      <div class="history-header">
+        <div class="history-prompt">${escapeHtml(task.prompt)}</div>
+        <span class="history-status ${task.status}">${statusLabels[task.status] || task.status}</span>
+      </div>
+      <div class="history-meta">${meta} · ${time}</div>`;
+
+    if (task.status === 'in_progress' || task.status === 'queued') {
+      body += `<div class="history-progress"><div class="history-progress-fill" style="width:${task.progress || 0}%"></div></div>`;
+    }
+
+    if (task.status === 'completed' && task.images && task.images.length > 0) {
+      body += `<div class="history-images">`;
+      task.images.forEach(url => {
+        body += `<img src="${url}" onclick="openModal('${url}')" loading="lazy">`;
+      });
+      body += `</div>`;
+      body += `<div class="history-actions">`;
+      if (task.images.length === 1) {
+        body += `<a href="${task.images[0]}" target="_blank" download class="btn btn-secondary btn-sm">下载</a>`;
+        body += `<button class="btn btn-secondary btn-sm" onclick="copyUrl('${task.images[0]}')">复制链接</button>`;
+      } else {
+        task.images.forEach((url, i) => {
+          body += `<a href="${url}" target="_blank" download class="btn btn-secondary btn-sm">下载${i + 1}</a>`;
+        });
+      }
+      body += `</div>`;
+    }
+
+    if (task.status === 'failed' && task.error) {
+      body += `<div class="history-error">${escapeHtml(task.error)}</div>`;
+    }
+
+    body += `<div class="history-actions" style="margin-top:8px">
+      <button class="btn btn-danger btn-sm" onclick="deleteTask('${task.id}')">删除</button>
+    </div>`;
+
+    div.innerHTML = body;
+    list.appendChild(div);
+  });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function updateTaskUI(task) {
+  const el = document.getElementById(`task-${task.id}`);
+  if (!el) return;
+  renderHistory();
 }
 
 async function pollTask(taskId) {
@@ -277,44 +353,45 @@ async function pollTask(taskId) {
   const interval = 3000;
   for (let i = 0; i < maxAttempts; i++) {
     await new Promise(r => setTimeout(r, interval));
-    const resp = await fetch(`${API_BASE}/v1/images/generations/${taskId}`, {
-      headers: { 'Authorization': `Bearer ${document.getElementById('apiKey').value.trim()}` }
-    });
-    const data = await resp.json();
+    try {
+      const resp = await fetch(`${API_BASE}/v1/images/generations/${taskId}`, {
+        headers: { 'Authorization': `Bearer ${document.getElementById('apiKey').value.trim()}` }
+      });
+      const data = await resp.json();
+      if (data.error) {
+        tasks[taskId].status = 'failed';
+        tasks[taskId].error = data.error.message || '查询失败';
+        saveTasks();
+        renderHistory();
+        return;
+      }
 
-    if (data.error) throw new Error(data.error.message || '查询任务状态失败');
+      tasks[taskId].status = data.status;
+      tasks[taskId].progress = data.progress || 0;
 
-    setStatus(`状态: ${data.status} (${data.progress || 0}%)`, data.progress || 0);
+      if (data.status === 'completed') {
+        tasks[taskId].images = (data.result?.data || []).map(d => d.url);
+        saveTasks();
+        renderHistory();
+        return;
+      }
+      if (data.status === 'failed') {
+        tasks[taskId].error = data.error?.message || '生成失败';
+        saveTasks();
+        renderHistory();
+        return;
+      }
 
-    if (data.status === 'completed') {
-      const results = (data.result?.data || []).map(d => d.url);
-      displayResults(results);
-      hideStatus();
-      return;
-    }
-    if (data.status === 'failed') {
-      throw new Error(data.error?.message || '生成失败');
+      saveTasks();
+      renderHistory();
+    } catch (e) {
+      // network error, keep polling
     }
   }
-  throw new Error('任务超时 (120 秒)');
-}
-
-function displayResults(urls) {
-  const area = document.getElementById('resultArea');
-  const grid = document.getElementById('resultGrid');
-  grid.innerHTML = '';
-  urls.forEach((url, i) => {
-    const card = document.createElement('div');
-    card.className = 'result-card';
-    card.innerHTML = `
-      <img src="${url}" onclick="openModal('${url}')" loading="lazy">
-      <div class="actions">
-        <a href="${url}" target="_blank" download>下载图片</a>
-        <a href="javascript:void(0)" onclick="copyUrl('${url}')">复制链接</a>
-      </div>`;
-    grid.appendChild(card);
-  });
-  area.classList.add('active');
+  tasks[taskId].status = 'failed';
+  tasks[taskId].error = '任务超时 (120 秒)';
+  saveTasks();
+  renderHistory();
 }
 
 function openModal(url) {
@@ -329,14 +406,26 @@ async function copyUrl(url) {
   try {
     await navigator.clipboard.writeText(url);
     alert('链接已复制');
-  } catch { fallbackCopy(url); }
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('链接已复制');
+  }
 }
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text; document.body.appendChild(ta);
-  ta.select(); document.execCommand('copy');
-  document.body.removeChild(ta);
-  alert('链接已复制');
+
+function deleteTask(id) {
+  delete tasks[id];
+  saveTasks();
+  renderHistory();
+}
+
+function clearHistory() {
+  if (!confirm('确定清空全部记录？')) return;
+  tasks = {};
+  saveTasks();
+  renderHistory();
 }
 
 async function generate() {
@@ -348,11 +437,9 @@ async function generate() {
 
   const btn = document.getElementById('generateBtn');
   btn.disabled = true;
-  btn.textContent = '生成中...';
-  document.getElementById('resultArea').classList.remove('active');
+  btn.textContent = '提交中...';
 
   try {
-    setStatus('正在上传参考图...', 0);
     let imageUrls = [];
     if (uploadedFiles.length > 0) {
       imageUrls = await uploadImages();
@@ -369,7 +456,6 @@ async function generate() {
     };
     if (imageUrls.length > 0) body.image_urls = imageUrls;
 
-    setStatus('正在提交生成任务...', 10);
     const resp = await fetch(`${API_BASE}/v1/images/generations`, {
       method: 'POST',
       headers: {
@@ -383,22 +469,39 @@ async function generate() {
     if (data.error) throw new Error(data.error.message || '请求失败');
     if (!data.id) throw new Error('未获取到任务 ID');
 
-    setStatus(`任务已提交，正在生成... (ID: ${data.id})`, 20);
-    await pollTask(data.id);
+    tasks[data.id] = {
+      id: data.id,
+      prompt,
+      size: body.size,
+      resolution: body.resolution,
+      quality: body.quality,
+      n: body.n,
+      status: data.status || 'queued',
+      progress: 0,
+      images: [],
+      error: null,
+      createdAt: Date.now()
+    };
+    saveTasks();
+    renderHistory();
+    pollTask(data.id);
+
+    document.getElementById('prompt').value = '';
 
   } catch (err) {
     showError(err.message);
-    hideStatus();
   } finally {
     btn.disabled = false;
     btn.textContent = '生成图像';
   }
 }
 
-// Keyboard shortcut: Ctrl+Enter to generate
 document.getElementById('prompt').addEventListener('keydown', e => {
   if (e.ctrlKey && e.key === 'Enter') generate();
 });
+
+loadTasks();
+renderHistory();
 </script>
 </body>
 </html>
