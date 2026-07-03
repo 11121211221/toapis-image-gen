@@ -301,6 +301,19 @@ async function fetchBalance() {
   }
 }
 
+async function getBalance() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) return null;
+  try {
+    const resp = await fetch(`${API_BASE}/v1/balance`, {
+      headers: { 'Authorization': `Bearer ${apiKey}` }
+    });
+    const data = await resp.json();
+    if (data.success) return data.used_balance;
+  } catch (e) {}
+  return null;
+}
+
 function toggleTheme() {
   const body = document.body;
   const btn = document.getElementById('themeToggle');
@@ -440,12 +453,14 @@ function openDetail(taskId) {
   const body = document.getElementById('detailBody');
   const meta = [task.size, task.resolution, task.quality, `${task.n}张`].join(' · ');
   const time = new Date(task.createdAt).toLocaleString('zh-CN');
+  const costTag = task.cost != null ? `<span class="detail-tag" style="background:var(--success-bg);color:var(--success)">消耗 $${task.cost}</span>` : '';
 
   let html = `
     <div class="detail-prompt">${escapeHtml(task.prompt)}</div>
     <div class="detail-meta">
       <span class="detail-tag">${meta}</span>
       <span class="detail-tag">${time}</span>
+      ${costTag}
       <span class="detail-tag" style="background:${task.status === 'completed' ? 'var(--success-bg)' : task.status === 'failed' ? 'var(--danger-bg)' : 'var(--border2)'};color:${task.status === 'completed' ? 'var(--success)' : task.status === 'failed' ? 'var(--danger)' : 'var(--text3)'}">${statusLabels[task.status]}</span>
     </div>`;
 
@@ -516,6 +531,12 @@ async function pollTask(taskId) {
       tasks[taskId].progress = data.progress || 0;
       if (data.status === 'completed') {
         tasks[taskId].images = (data.result?.data || []).map(d => d.url);
+        if (tasks[taskId].usedBefore != null) {
+          const usedAfter = await getBalance();
+          if (usedAfter != null) {
+            tasks[taskId].cost = Math.round((usedAfter - tasks[taskId].usedBefore) * 10000) / 10000;
+          }
+        }
         saveTasks(); renderHistory();
         if (currentDetailId === taskId) openDetail(taskId);
         delete pollers[taskId]; return;
@@ -582,6 +603,8 @@ async function retryTask(id) {
   };
 
   try {
+    const usedBefore = await getBalance();
+
     const resp = await fetch(`${API_BASE}/v1/images/generations`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -595,7 +618,8 @@ async function retryTask(id) {
     tasks[data.id] = {
       id: data.id, prompt: task.prompt, size: task.size, resolution: task.resolution,
       quality: task.quality, n: task.n, status: data.status || 'queued',
-      progress: 0, images: [], error: null, createdAt: Date.now()
+      progress: 0, images: [], error: null, createdAt: Date.now(),
+      usedBefore
     };
     saveTasks(); renderHistory();
     pollTask(data.id);
@@ -638,6 +662,8 @@ async function generate() {
     };
     if (imageUrls.length > 0) body.image_urls = imageUrls;
 
+    const usedBefore = await getBalance();
+
     const resp = await fetch(`${API_BASE}/v1/images/generations`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -651,7 +677,8 @@ async function generate() {
     tasks[data.id] = {
       id: data.id, prompt, size: body.size, resolution: body.resolution,
       quality: body.quality, n: body.n, status: data.status || 'queued',
-      progress: 0, images: [], error: null, createdAt: Date.now()
+      progress: 0, images: [], error: null, createdAt: Date.now(),
+      usedBefore
     };
     saveTasks(); renderHistory();
     pollTask(data.id);
