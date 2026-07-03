@@ -349,13 +349,17 @@ function updateTaskUI(task) {
 }
 
 async function pollTask(taskId) {
-  const maxAttempts = 60;
+  if (pollers[taskId]) return;
+  pollers[taskId] = true;
+  const maxAttempts = 240;
   const interval = 3000;
   for (let i = 0; i < maxAttempts; i++) {
     await new Promise(r => setTimeout(r, interval));
     try {
+      const apiKey = document.getElementById('apiKey').value.trim();
+      if (!apiKey) continue;
       const resp = await fetch(`${API_BASE}/v1/images/generations/${taskId}`, {
-        headers: { 'Authorization': `Bearer ${document.getElementById('apiKey').value.trim()}` }
+        headers: { 'Authorization': `Bearer ${apiKey}` }
       });
       const data = await resp.json();
       if (data.error) {
@@ -363,6 +367,7 @@ async function pollTask(taskId) {
         tasks[taskId].error = data.error.message || '查询失败';
         saveTasks();
         renderHistory();
+        delete pollers[taskId];
         return;
       }
 
@@ -373,12 +378,14 @@ async function pollTask(taskId) {
         tasks[taskId].images = (data.result?.data || []).map(d => d.url);
         saveTasks();
         renderHistory();
+        delete pollers[taskId];
         return;
       }
       if (data.status === 'failed') {
         tasks[taskId].error = data.error?.message || '生成失败';
         saveTasks();
         renderHistory();
+        delete pollers[taskId];
         return;
       }
 
@@ -389,9 +396,10 @@ async function pollTask(taskId) {
     }
   }
   tasks[taskId].status = 'failed';
-  tasks[taskId].error = '任务超时 (120 秒)';
+  tasks[taskId].error = '任务超时 (12 分钟)';
   saveTasks();
   renderHistory();
+  delete pollers[taskId];
 }
 
 function openModal(url) {
@@ -502,6 +510,9 @@ document.getElementById('prompt').addEventListener('keydown', e => {
 
 loadTasks();
 renderHistory();
+Object.values(tasks).forEach(t => {
+  if (t.status === 'queued' || t.status === 'in_progress') pollTask(t.id);
+});
 </script>
 </body>
 </html>
