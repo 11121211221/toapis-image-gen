@@ -27,84 +27,110 @@ body.light {
   --header-from: #2563eb; --header-to: #1d4ed8;
 }
 
-.header { background: linear-gradient(135deg, var(--header-from), var(--header-to)); padding: 20px 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.header { background: linear-gradient(135deg, var(--header-from), var(--header-to)); padding: 16px 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .header-left h1 { font-size: 20px; font-weight: 600; color: #fff; }
 .header-left p { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
 .theme-toggle { background: rgba(255,255,255,0.15); border: none; color: #fff; width: 40px; height: 40px; border-radius: 10px; font-size: 18px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
 .theme-toggle:hover { background: rgba(255,255,255,0.25); }
-.container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
-.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; transition: background 0.3s, border-color 0.3s; }
-.card-title { font-size: 15px; font-weight: 600; color: var(--text2); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
-.card-title .badge { font-size: 12px; background: var(--border2); color: var(--text3); padding: 2px 8px; border-radius: 10px; font-weight: 400; }
-.form-group { margin-bottom: 16px; }
-.form-group label { display: block; font-size: 13px; color: var(--text3); margin-bottom: 6px; }
+
+.layout { display: flex; max-width: 1400px; margin: 0 auto; padding: 24px; gap: 24px; min-height: calc(100vh - 73px); }
+.panel-left { flex: 0 0 480px; display: flex; flex-direction: column; gap: 16px; }
+.panel-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: background 0.3s, border-color 0.3s; }
+.card-title { font-size: 14px; font-weight: 600; color: var(--text2); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+.card-title .badge { font-size: 11px; background: var(--border2); color: var(--text3); padding: 2px 8px; border-radius: 10px; font-weight: 400; }
+
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 12px; color: var(--text3); margin-bottom: 5px; }
 .form-group input, .form-group textarea, .form-group select {
-  width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: 14px; outline: none; transition: border-color 0.2s, background 0.3s;
+  width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 13px; outline: none; transition: border-color 0.2s, background 0.3s;
 }
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); }
-.form-group textarea { resize: vertical; min-height: 100px; font-family: inherit; }
+.form-group textarea { resize: vertical; min-height: 80px; font-family: inherit; }
 .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
 body.light .form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23555'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E"); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-.api-key-row { display: flex; gap: 12px; align-items: center; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+.api-key-row { display: flex; gap: 10px; align-items: center; }
 .api-key-row input { flex: 1; }
-.balance-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; font-size: 13px; color: var(--text3); }
-.balance-row .balance-info { display: flex; gap: 16px; }
+.token-toggle { cursor: pointer; padding: 9px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; font-size: 14px; color: var(--text3); white-space: nowrap; }
+.balance-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding: 8px 12px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; font-size: 12px; color: var(--text3); }
+.balance-row .balance-info { display: flex; gap: 14px; }
 .balance-row .balance-item { display: flex; align-items: center; gap: 4px; }
 .balance-row .balance-value { color: var(--text); font-weight: 500; }
 .balance-row .balance-value.warn { color: var(--danger); }
-.btn-query { padding: 6px 14px; font-size: 12px; background: var(--bg3); color: var(--text3); border: 1px solid var(--border2); border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.btn-query { padding: 5px 12px; font-size: 11px; background: var(--bg3); color: var(--text3); border: 1px solid var(--border2); border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
 .btn-query:hover { border-color: var(--accent); color: var(--accent); }
 .btn-query:disabled { opacity: 0.5; cursor: not-allowed; }
+
 .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary { background: var(--accent); color: #fff; width: 100%; }
 .btn-primary:hover { background: var(--accent2); }
 .btn-secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border3); }
 .btn-secondary:hover { background: var(--border2); }
 .btn-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
 .btn-danger:hover { background: var(--danger-hover); }
-.btn-sm { padding: 6px 12px; font-size: 12px; }
-.upload-zone { border: 2px dashed var(--border2); border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+.btn-sm { padding: 5px 10px; font-size: 11px; }
+
+.upload-zone { border: 2px dashed var(--border2); border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
 .upload-zone:hover { border-color: var(--accent); }
-.upload-zone p { font-size: 13px; color: var(--text4); }
-.upload-zone .icon { font-size: 28px; margin-bottom: 8px; }
-.preview-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.preview-item { position: relative; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border2); }
+.upload-zone p { font-size: 12px; color: var(--text4); }
+.upload-zone .icon { font-size: 24px; margin-bottom: 6px; }
+.preview-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.preview-item { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border2); }
 .preview-item img { width: 100%; height: 100%; object-fit: cover; }
-.preview-item .remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.error-msg { background: var(--danger-bg); border: 1px solid var(--danger-border); border-radius: 8px; padding: 12px 16px; color: var(--danger); font-size: 13px; display: none; margin-bottom: 16px; }
+.preview-item .remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+.error-msg { background: var(--danger-bg); border: 1px solid var(--danger-border); border-radius: 8px; padding: 10px 14px; color: var(--danger); font-size: 12px; display: none; margin-bottom: 12px; }
 .error-msg.active { display: block; }
-.token-toggle { cursor: pointer; padding: 10px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; font-size: 14px; color: var(--text3); white-space: nowrap; }
+
 .modal-overlay { display: none; position: fixed; inset: 0; background: var(--modal-bg); z-index: 1000; justify-content: center; align-items: center; padding: 24px; }
 .modal-overlay.active { display: flex; }
 .modal-overlay img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
 .modal-close { position: fixed; top: 16px; right: 24px; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 24px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 1001; }
 
-.history-list { display: flex; flex-direction: column; gap: 12px; }
-.history-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; transition: border-color 0.2s, background 0.3s; }
-.history-item:hover { border-color: var(--border3); }
-.history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.history-prompt { font-size: 13px; color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 12px; }
-.history-status { font-size: 11px; padding: 3px 10px; border-radius: 12px; white-space: nowrap; flex-shrink: 0; }
-.history-status.queued { background: var(--border2); color: var(--text6); }
-.history-status.in_progress { background: #1a2a3a; color: var(--accent); }
-body.light .history-status.in_progress { background: #dbeafe; }
-.history-status.completed { background: var(--success-bg); color: var(--success); }
-.history-status.failed { background: var(--danger-bg); color: var(--danger); }
-.history-meta { font-size: 11px; color: var(--text5); margin-bottom: 10px; }
-.history-progress { height: 3px; background: var(--progress-bg); border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
-.history-progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
-.history-images { display: flex; flex-wrap: wrap; gap: 8px; }
-.history-images img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); transition: transform 0.2s; }
-.history-images img:hover { transform: scale(1.05); }
-.history-actions { display: flex; gap: 6px; margin-top: 10px; }
-.history-error { font-size: 12px; color: var(--danger); background: var(--danger-bg); padding: 8px 12px; border-radius: 6px; margin-top: 8px; }
-.empty-hint { text-align: center; padding: 40px 20px; color: var(--text5); font-size: 14px; }
-@media (max-width: 640px) {
-  .form-row { grid-template-columns: 1fr; }
-  .container { padding: 16px 12px; }
-  .history-images img { width: 80px; height: 80px; }
-  .header { padding: 16px; }
+.history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+.history-thumb { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; transition: border-color 0.2s, transform 0.2s; background: var(--bg3); }
+.history-thumb:hover { border-color: var(--accent); transform: translateY(-2px); }
+.history-thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.history-thumb .thumb-status { position: absolute; top: 6px; right: 6px; font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+.history-thumb .thumb-status.queued { background: rgba(0,0,0,0.6); color: #aaa; }
+.history-thumb .thumb-status.in_progress { background: rgba(74,158,255,0.8); color: #fff; }
+.history-thumb .thumb-status.completed { background: rgba(90,191,90,0.8); color: #fff; }
+.history-thumb .thumb-status.failed { background: rgba(255,107,107,0.8); color: #fff; }
+.history-thumb .thumb-prompt { font-size: 11px; color: var(--text3); padding: 8px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 46px; }
+.history-thumb .thumb-progress { height: 2px; background: var(--progress-bg); }
+.history-thumb .thumb-progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+.history-thumb-empty { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text5); font-size: 13px; }
+
+.detail-overlay { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 420px; background: var(--bg2); border-left: 1px solid var(--border); z-index: 999; flex-direction: column; box-shadow: -4px 0 20px rgba(0,0,0,0.3); }
+.detail-overlay.active { display: flex; }
+.detail-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.detail-header h3 { font-size: 14px; font-weight: 600; color: var(--text2); }
+.detail-close { background: none; border: none; color: var(--text3); font-size: 20px; cursor: pointer; padding: 4px; }
+.detail-close:hover { color: var(--text); }
+.detail-body { flex: 1; overflow-y: auto; padding: 20px; }
+.detail-prompt { font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 16px; word-break: break-all; }
+.detail-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.detail-tag { font-size: 11px; padding: 3px 10px; border-radius: 6px; background: var(--border2); color: var(--text3); }
+.detail-images { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.detail-images img { width: 100%; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); }
+.detail-images img:hover { opacity: 0.9; }
+.detail-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.detail-error { font-size: 12px; color: var(--danger); background: var(--danger-bg); padding: 10px; border-radius: 6px; margin-bottom: 12px; }
+.detail-delete { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
+.detail-progress { height: 3px; background: var(--progress-bg); border-radius: 2px; margin-bottom: 16px; overflow: hidden; }
+.detail-progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+
+.history-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-shrink: 0; }
+.history-toolbar h3 { font-size: 14px; font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 8px; }
+
+@media (max-width: 900px) {
+  .layout { flex-direction: column; padding: 16px; }
+  .panel-left { flex: none; }
+  .detail-overlay { width: 100%; }
+  .history-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
 }
 </style>
 </head>
@@ -118,70 +144,64 @@ body.light .history-status.in_progress { background: #dbeafe; }
   <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换主题">☀️</button>
 </div>
 
-<div class="container">
-  <div class="error-msg" id="errorMsg"></div>
-
-  <div class="card">
-    <div class="card-title">API 配置</div>
-    <div class="form-group">
-      <label>API Key</label>
-      <div class="api-key-row">
-        <input type="password" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-        <button class="token-toggle" onclick="toggleApiKey()" title="显示/隐藏">👁</button>
-      </div>
-      <div class="balance-row" id="balanceRow" style="display:none">
-        <div class="balance-info">
-          <div class="balance-item">剩余额度: <span class="balance-value" id="remainBalance">-</span></div>
-          <div class="balance-item">已用: <span class="balance-value" id="usedBalance">-</span></div>
+<div class="layout">
+  <div class="panel-left">
+    <div class="card">
+      <div class="card-title">API 配置</div>
+      <div class="form-group">
+        <label>API Key</label>
+        <div class="api-key-row">
+          <input type="password" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+          <button class="token-toggle" onclick="toggleApiKey()" title="显示/隐藏">👁</button>
         </div>
-        <button class="btn-query" id="queryBtn" onclick="fetchBalance()">查询额度</button>
+        <div class="balance-row" id="balanceRow" style="display:none">
+          <div class="balance-info">
+            <div class="balance-item">剩余额度: <span class="balance-value" id="remainBalance">-</span></div>
+            <div class="balance-item">已用: <span class="balance-value" id="usedBalance">-</span></div>
+          </div>
+          <button class="btn-query" id="queryBtn" onclick="fetchBalance()">查询额度</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="card-title">图像设置</div>
-    <div class="form-group">
-      <label>提示词 (Prompt)</label>
-      <textarea id="prompt" placeholder="描述你想要生成的图像内容...&#10;例如：未来城市夜景，霓虹灯，电影感构图"></textarea>
-    </div>
-    <div class="form-row">
+    <div class="card">
+      <div class="card-title">图像设置</div>
       <div class="form-group">
-        <label>宽高比</label>
-        <select id="size">
-          <option value="1:1">1:1 正方形</option>
-          <option value="3:2">3:2 横版</option>
-          <option value="2:3">2:3 竖版</option>
-          <option value="4:3">4:3 横版</option>
-          <option value="3:4">3:4 竖版</option>
-          <option value="5:4">5:4 横版</option>
-          <option value="4:5">4:5 竖版</option>
-          <option value="16:9" selected>16:9 宽屏</option>
-          <option value="9:16">9:16 竖屏</option>
-          <option value="2:1">2:1 超宽</option>
-          <option value="1:2">1:2 超高</option>
-          <option value="21:9">21:9 超宽屏</option>
-          <option value="9:21">9:21 超高屏</option>
-        </select>
+        <label>提示词 (Prompt)</label>
+        <textarea id="prompt" placeholder="描述你想要生成的图像内容..."></textarea>
       </div>
-      <div class="form-group">
-        <label>分辨率</label>
-        <select id="resolution">
-          <option value="1k">1K - 标准</option>
-          <option value="2k" selected>2K - 高清</option>
-          <option value="4k">4K - 超高清</option>
-        </select>
+      <div class="form-row">
+        <div class="form-group">
+          <label>宽高比</label>
+          <select id="size">
+            <option value="1:1">1:1</option>
+            <option value="3:2">3:2</option>
+            <option value="2:3">2:3</option>
+            <option value="4:3">4:3</option>
+            <option value="3:4">3:4</option>
+            <option value="16:9" selected>16:9</option>
+            <option value="9:16">9:16</option>
+            <option value="21:9">21:9</option>
+            <option value="9:21">9:21</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>分辨率</label>
+          <select id="resolution">
+            <option value="1k">1K</option>
+            <option value="2k" selected>2K</option>
+            <option value="4k">4K</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>质量</label>
+          <select id="quality">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>质量</label>
-        <select id="quality">
-          <option value="low">Low - 快速省钱</option>
-          <option value="medium" selected>Medium - 平衡</option>
-          <option value="high">High - 最高质量</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
       <div class="form-group">
         <label>生成数量</label>
         <select id="n">
@@ -192,35 +212,40 @@ body.light .history-status.in_progress { background: #dbeafe; }
         </select>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="card-title">参考图 (可选，用于图生图)</div>
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-      <div class="icon">📁</div>
-      <p>点击或拖拽图片到此处上传 (最多 5 张)</p>
-      <p style="margin-top:4px;font-size:11px;color:var(--text5)">支持 JPEG / PNG / WebP / GIF，最大 10MB</p>
+    <div class="card">
+      <div class="card-title">参考图 (可选)</div>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <div class="icon">📁</div>
+        <p>点击或拖拽图片到此处 (最多 5 张)</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/gif" multiple style="display:none">
+      <div class="preview-grid" id="previewGrid"></div>
     </div>
-    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/gif" multiple style="display:none">
-    <div class="preview-grid" id="previewGrid"></div>
-  </div>
 
-  <div style="text-align:center;margin-top:8px">
     <button class="btn btn-primary" id="generateBtn" onclick="generate()">生成图像</button>
   </div>
 
-  <div class="card" style="margin-top:24px">
-    <div class="card-title">
-      生成记录
-      <span class="badge" id="historyCount">0</span>
+  <div class="panel-right">
+    <div class="history-toolbar">
+      <h3>历史记录 <span class="badge" id="historyCount">0</span></h3>
+      <button class="btn btn-danger btn-sm" id="clearAllBtn" onclick="clearHistory()" style="display:none">清空</button>
     </div>
-    <div id="historyList" class="history-list">
-      <div class="empty-hint">暂无记录，生成图像后会自动出现在这里</div>
+    <div style="font-size:11px;color:var(--text5);background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:8px 12px;margin-bottom:12px;line-height:1.5">
+      ⚠ 图片链接有效期 24 小时，历史记录最多保留 100 条，请及时下载保存
     </div>
-    <div style="text-align:right;margin-top:12px;display:none" id="clearAllWrap">
-      <button class="btn btn-danger btn-sm" onclick="clearHistory()">清空全部记录</button>
+    <div class="history-grid" id="historyGrid">
+      <div class="history-thumb-empty">暂无记录</div>
     </div>
   </div>
+</div>
+
+<div class="detail-overlay" id="detailPanel">
+  <div class="detail-header">
+    <h3>任务详情</h3>
+    <button class="detail-close" onclick="closeDetail()">&times;</button>
+  </div>
+  <div class="detail-body" id="detailBody"></div>
 </div>
 
 <div class="modal-overlay" id="imageModal" onclick="closeModal()">
@@ -258,8 +283,7 @@ async function fetchBalance() {
     });
     const data = await resp.json();
     if (data.success) {
-      const row = document.getElementById('balanceRow');
-      row.style.display = 'flex';
+      document.getElementById('balanceRow').style.display = 'flex';
       const remain = document.getElementById('remainBalance');
       const used = document.getElementById('usedBalance');
       if (data.unlimited_quota) {
@@ -271,9 +295,7 @@ async function fetchBalance() {
       }
       used.textContent = `$${data.used_balance}`;
     }
-  } catch (e) {
-    // ignore
-  } finally {
+  } catch (e) {} finally {
     btn.disabled = false;
     btn.textContent = '查询额度';
   }
@@ -310,7 +332,7 @@ fileInput.addEventListener('change', e => handleFiles(e.target.files));
 function handleFiles(files) {
   for (const f of files) {
     if (uploadedFiles.length >= 5) { showError('最多上传 5 张参考图'); break; }
-    if (f.size > 10 * 1024 * 1024) { showError(`${f.name} 超过 10MB 限制`); continue; }
+    if (f.size > 10 * 1024 * 1024) { showError(`${f.name} 超过 10MB`); continue; }
     uploadedFiles.push(f);
   }
   renderPreviews();
@@ -348,10 +370,12 @@ async function uploadImages() {
 }
 
 function saveTasks() {
-  const store = {};
-  for (const [id, t] of Object.entries(tasks)) {
-    store[id] = { ...t };
+  const entries = Object.values(tasks).sort((a, b) => b.createdAt - a.createdAt);
+  if (entries.length > 100) {
+    entries.slice(100).forEach(t => delete tasks[t.id]);
   }
+  const store = {};
+  for (const [id, t] of Object.entries(tasks)) store[id] = { ...t };
   localStorage.setItem('toapis_history', JSON.stringify(store));
 }
 
@@ -362,81 +386,109 @@ function loadTasks() {
   } catch { tasks = {}; }
 }
 
-function renderHistory() {
-  const list = document.getElementById('historyList');
-  const countEl = document.getElementById('historyCount');
-  const clearWrap = document.getElementById('clearAllWrap');
-  const entries = Object.values(tasks).sort((a, b) => b.createdAt - a.createdAt);
-  countEl.textContent = entries.length;
-  clearWrap.style.display = entries.length > 0 ? 'block' : 'none';
-
-  if (entries.length === 0) {
-    list.innerHTML = '<div class="empty-hint">暂无记录，生成图像后会自动出现在这里</div>';
-    return;
-  }
-
-  list.innerHTML = '';
-  entries.forEach(task => {
-    const div = document.createElement('div');
-    div.className = 'history-item';
-    div.id = `task-${task.id}`;
-
-    const statusLabels = { queued: '排队中', in_progress: '生成中', completed: '已完成', failed: '失败' };
-    const time = new Date(task.createdAt).toLocaleString('zh-CN');
-    const meta = [task.size, task.resolution, task.quality, `${task.n}张`].join(' · ');
-
-    let body = `
-      <div class="history-header">
-        <div class="history-prompt">${escapeHtml(task.prompt)}</div>
-        <span class="history-status ${task.status}">${statusLabels[task.status] || task.status}</span>
-      </div>
-      <div class="history-meta">${meta} · ${time}</div>`;
-
-    if (task.status === 'in_progress' || task.status === 'queued') {
-      body += `<div class="history-progress"><div class="history-progress-fill" style="width:${task.progress || 0}%"></div></div>`;
-    }
-
-    if (task.status === 'completed' && task.images && task.images.length > 0) {
-      body += `<div class="history-images">`;
-      task.images.forEach(url => {
-        body += `<img src="${url}" onclick="openModal('${url}')" loading="lazy">`;
-      });
-      body += `</div>`;
-      body += `<div class="history-actions">`;
-      if (task.images.length === 1) {
-        body += `<a href="${task.images[0]}" target="_blank" download class="btn btn-secondary btn-sm">下载</a>`;
-        body += `<button class="btn btn-secondary btn-sm" onclick="copyUrl('${task.images[0]}')">复制链接</button>`;
-      } else {
-        task.images.forEach((url, i) => {
-          body += `<a href="${url}" target="_blank" download class="btn btn-secondary btn-sm">下载${i + 1}</a>`;
-        });
-      }
-      body += `</div>`;
-    }
-
-    if (task.status === 'failed' && task.error) {
-      body += `<div class="history-error">${escapeHtml(task.error)}</div>`;
-    }
-
-    body += `<div class="history-actions" style="margin-top:8px">
-      <button class="btn btn-danger btn-sm" onclick="deleteTask('${task.id}')">删除</button>
-    </div>`;
-
-    div.innerHTML = body;
-    list.appendChild(div);
-  });
-}
-
 function escapeHtml(s) {
   const d = document.createElement('div');
   d.textContent = s;
   return d.innerHTML;
 }
 
-function updateTaskUI(task) {
-  const el = document.getElementById(`task-${task.id}`);
-  if (!el) return;
-  renderHistory();
+const statusLabels = { queued: '排队中', in_progress: '生成中', completed: '已完成', failed: '失败' };
+
+function renderHistory() {
+  const grid = document.getElementById('historyGrid');
+  const countEl = document.getElementById('historyCount');
+  const clearBtn = document.getElementById('clearAllBtn');
+  const entries = Object.values(tasks).sort((a, b) => b.createdAt - a.createdAt);
+  countEl.textContent = entries.length;
+  clearBtn.style.display = entries.length > 0 ? 'inline-block' : 'none';
+
+  if (entries.length === 0) {
+    grid.innerHTML = '<div class="history-thumb-empty">暂无记录</div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  entries.forEach(task => {
+    const div = document.createElement('div');
+    div.className = 'history-thumb';
+    div.onclick = () => openDetail(task.id);
+
+    const thumbImg = (task.images && task.images.length > 0)
+      ? `<img src="${task.images[0]}" loading="lazy">`
+      : `<div style="width:100%;aspect-ratio:1;background:var(--border2);display:flex;align-items:center;justify-content:center;color:var(--text5);font-size:12px">${task.status === 'failed' ? '失败' : '生成中...'}</div>`;
+
+    const progress = (task.status === 'in_progress' || task.status === 'queued')
+      ? `<div class="thumb-progress"><div class="thumb-progress-fill" style="width:${task.progress || 0}%"></div></div>`
+      : '';
+
+    div.innerHTML = `
+      ${thumbImg}
+      <span class="thumb-status ${task.status}">${statusLabels[task.status] || task.status}</span>
+      ${progress}
+      <div class="thumb-prompt">${escapeHtml(task.prompt)}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+let currentDetailId = null;
+
+function openDetail(taskId) {
+  currentDetailId = taskId;
+  const task = tasks[taskId];
+  if (!task) return;
+
+  const body = document.getElementById('detailBody');
+  const meta = [task.size, task.resolution, task.quality, `${task.n}张`].join(' · ');
+  const time = new Date(task.createdAt).toLocaleString('zh-CN');
+
+  let html = `
+    <div class="detail-prompt">${escapeHtml(task.prompt)}</div>
+    <div class="detail-meta">
+      <span class="detail-tag">${meta}</span>
+      <span class="detail-tag">${time}</span>
+      <span class="detail-tag" style="background:${task.status === 'completed' ? 'var(--success-bg)' : task.status === 'failed' ? 'var(--danger-bg)' : 'var(--border2)'};color:${task.status === 'completed' ? 'var(--success)' : task.status === 'failed' ? 'var(--danger)' : 'var(--text3)'}">${statusLabels[task.status]}</span>
+    </div>`;
+
+  if (task.status === 'in_progress' || task.status === 'queued') {
+    html += `<div class="detail-progress"><div class="detail-progress-fill" style="width:${task.progress || 0}%"></div></div>`;
+  }
+
+  if (task.status === 'completed' && task.images && task.images.length > 0) {
+    html += '<div class="detail-images">';
+    task.images.forEach(url => {
+      html += `<img src="${url}" onclick="openModal('${url}')" loading="lazy">`;
+    });
+    html += '</div>';
+    html += '<div class="detail-actions">';
+    if (task.images.length === 1) {
+      html += `<a href="${task.images[0]}" target="_blank" download class="btn btn-secondary btn-sm">下载</a>`;
+      html += `<button class="btn btn-secondary btn-sm" onclick="copyUrl('${task.images[0]}')">复制链接</button>`;
+    } else {
+      task.images.forEach((url, i) => {
+        html += `<a href="${url}" target="_blank" download class="btn btn-secondary btn-sm">下载${i + 1}</a>`;
+      });
+    }
+    html += '</div>';
+  }
+
+  if (task.status === 'failed' && task.error) {
+    html += `<div class="detail-error">${escapeHtml(task.error)}</div>`;
+  }
+
+  html += `<div class="detail-delete" style="display:flex;gap:8px;align-items:center">`;
+  if (task.status === 'failed') {
+    html += `<button class="btn btn-secondary btn-sm" onclick="retryTask('${task.id}')">重试</button>`;
+  }
+  html += `<button class="btn btn-danger btn-sm" onclick="deleteTask('${task.id}')">删除</button>`;
+  html += `</div>`;
+
+  body.innerHTML = html;
+  document.getElementById('detailPanel').classList.add('active');
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('active');
+  currentDetailId = null;
 }
 
 async function pollTask(taskId) {
@@ -456,40 +508,32 @@ async function pollTask(taskId) {
       if (data.error) {
         tasks[taskId].status = 'failed';
         tasks[taskId].error = data.error.message || '查询失败';
-        saveTasks();
-        renderHistory();
-        delete pollers[taskId];
-        return;
+        saveTasks(); renderHistory();
+        if (currentDetailId === taskId) openDetail(taskId);
+        delete pollers[taskId]; return;
       }
-
       tasks[taskId].status = data.status;
       tasks[taskId].progress = data.progress || 0;
-
       if (data.status === 'completed') {
         tasks[taskId].images = (data.result?.data || []).map(d => d.url);
-        saveTasks();
-        renderHistory();
-        delete pollers[taskId];
-        return;
+        saveTasks(); renderHistory();
+        if (currentDetailId === taskId) openDetail(taskId);
+        delete pollers[taskId]; return;
       }
       if (data.status === 'failed') {
         tasks[taskId].error = data.error?.message || '生成失败';
-        saveTasks();
-        renderHistory();
-        delete pollers[taskId];
-        return;
+        saveTasks(); renderHistory();
+        if (currentDetailId === taskId) openDetail(taskId);
+        delete pollers[taskId]; return;
       }
-
-      saveTasks();
-      renderHistory();
-    } catch (e) {
-      // network error, keep polling
-    }
+      saveTasks(); renderHistory();
+      if (currentDetailId === taskId) openDetail(taskId);
+    } catch (e) {}
   }
   tasks[taskId].status = 'failed';
   tasks[taskId].error = '任务超时 (12 分钟)';
-  saveTasks();
-  renderHistory();
+  saveTasks(); renderHistory();
+  if (currentDetailId === taskId) openDetail(taskId);
   delete pollers[taskId];
 }
 
@@ -518,6 +562,48 @@ function deleteTask(id) {
   delete tasks[id];
   saveTasks();
   renderHistory();
+  closeDetail();
+}
+
+async function retryTask(id) {
+  const task = tasks[id];
+  if (!task) return;
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) return showError('请输入 API Key');
+
+  const body = {
+    model: 'gpt-image-2-vip',
+    prompt: task.prompt,
+    size: task.size,
+    resolution: task.resolution,
+    quality: task.quality,
+    n: task.n,
+    response_format: 'url'
+  };
+
+  try {
+    const resp = await fetch(`${API_BASE}/v1/images/generations`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error.message);
+    if (!data.id) throw new Error('未获取到任务 ID');
+
+    delete tasks[id];
+    tasks[data.id] = {
+      id: data.id, prompt: task.prompt, size: task.size, resolution: task.resolution,
+      quality: task.quality, n: task.n, status: data.status || 'queued',
+      progress: 0, images: [], error: null, createdAt: Date.now()
+    };
+    saveTasks(); renderHistory();
+    pollTask(data.id);
+    fetchBalance();
+    openDetail(data.id);
+  } catch (err) {
+    showError(err.message);
+  }
 }
 
 function clearHistory() {
@@ -530,7 +616,6 @@ function clearHistory() {
 async function generate() {
   const apiKey = document.getElementById('apiKey').value.trim();
   const prompt = document.getElementById('prompt').value.trim();
-
   if (!apiKey) return showError('请输入 API Key');
   if (!prompt) return showError('请输入提示词');
 
@@ -540,9 +625,7 @@ async function generate() {
 
   try {
     let imageUrls = [];
-    if (uploadedFiles.length > 0) {
-      imageUrls = await uploadImages();
-    }
+    if (uploadedFiles.length > 0) imageUrls = await uploadImages();
 
     const body = {
       model: 'gpt-image-2-vip',
@@ -557,10 +640,7 @@ async function generate() {
 
     const resp = await fetch(`${API_BASE}/v1/images/generations`, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
 
@@ -569,25 +649,14 @@ async function generate() {
     if (!data.id) throw new Error('未获取到任务 ID');
 
     tasks[data.id] = {
-      id: data.id,
-      prompt,
-      size: body.size,
-      resolution: body.resolution,
-      quality: body.quality,
-      n: body.n,
-      status: data.status || 'queued',
-      progress: 0,
-      images: [],
-      error: null,
-      createdAt: Date.now()
+      id: data.id, prompt, size: body.size, resolution: body.resolution,
+      quality: body.quality, n: body.n, status: data.status || 'queued',
+      progress: 0, images: [], error: null, createdAt: Date.now()
     };
-    saveTasks();
-    renderHistory();
+    saveTasks(); renderHistory();
     pollTask(data.id);
     fetchBalance();
-
     document.getElementById('prompt').value = '';
-
   } catch (err) {
     showError(err.message);
   } finally {
