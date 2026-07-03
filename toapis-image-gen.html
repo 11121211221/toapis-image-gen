@@ -48,6 +48,14 @@ body.light .form-group select { background-image: url("data:image/svg+xml,%3Csvg
 .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 .api-key-row { display: flex; gap: 12px; align-items: center; }
 .api-key-row input { flex: 1; }
+.balance-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; font-size: 13px; color: var(--text3); }
+.balance-row .balance-info { display: flex; gap: 16px; }
+.balance-row .balance-item { display: flex; align-items: center; gap: 4px; }
+.balance-row .balance-value { color: var(--text); font-weight: 500; }
+.balance-row .balance-value.warn { color: var(--danger); }
+.btn-query { padding: 6px 14px; font-size: 12px; background: var(--bg3); color: var(--text3); border: 1px solid var(--border2); border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.btn-query:hover { border-color: var(--accent); color: var(--accent); }
+.btn-query:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent2); }
@@ -120,6 +128,13 @@ body.light .history-status.in_progress { background: #dbeafe; }
       <div class="api-key-row">
         <input type="password" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
         <button class="token-toggle" onclick="toggleApiKey()" title="显示/隐藏">👁</button>
+      </div>
+      <div class="balance-row" id="balanceRow" style="display:none">
+        <div class="balance-info">
+          <div class="balance-item">剩余额度: <span class="balance-value" id="remainBalance">-</span></div>
+          <div class="balance-item">已用: <span class="balance-value" id="usedBalance">-</span></div>
+        </div>
+        <button class="btn-query" id="queryBtn" onclick="fetchBalance()">查询额度</button>
       </div>
     </div>
   </div>
@@ -229,6 +244,39 @@ function showError(msg) {
 function toggleApiKey() {
   const el = document.getElementById('apiKey');
   el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+async function fetchBalance() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) return;
+  const btn = document.getElementById('queryBtn');
+  btn.disabled = true;
+  btn.textContent = '查询中...';
+  try {
+    const resp = await fetch(`${API_BASE}/v1/balance`, {
+      headers: { 'Authorization': `Bearer ${apiKey}` }
+    });
+    const data = await resp.json();
+    if (data.success) {
+      const row = document.getElementById('balanceRow');
+      row.style.display = 'flex';
+      const remain = document.getElementById('remainBalance');
+      const used = document.getElementById('usedBalance');
+      if (data.unlimited_quota) {
+        remain.textContent = '无限';
+        remain.classList.remove('warn');
+      } else {
+        remain.textContent = `$${data.remain_balance}`;
+        remain.classList.toggle('warn', data.remain_balance < 1);
+      }
+      used.textContent = `$${data.used_balance}`;
+    }
+  } catch (e) {
+    // ignore
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '查询额度';
+  }
 }
 
 function toggleTheme() {
@@ -536,6 +584,7 @@ async function generate() {
     saveTasks();
     renderHistory();
     pollTask(data.id);
+    fetchBalance();
 
     document.getElementById('prompt').value = '';
 
@@ -556,6 +605,7 @@ renderHistory();
 Object.values(tasks).forEach(t => {
   if (t.status === 'queued' || t.status === 'in_progress') pollTask(t.id);
 });
+if (document.getElementById('apiKey').value.trim()) fetchBalance();
 </script>
 </body>
 </html>
