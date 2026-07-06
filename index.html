@@ -420,15 +420,51 @@ function renderHistory() {
     return;
   }
 
-  grid.innerHTML = '';
-  entries.forEach(task => {
-    const div = document.createElement('div');
+  const existingIds = new Set();
+  grid.querySelectorAll('.history-thumb').forEach(el => existingIds.add(el.dataset.id));
+
+  const newIds = new Set(entries.map(t => t.id));
+
+  grid.querySelectorAll('.history-thumb').forEach(el => {
+    if (!newIds.has(el.dataset.id)) el.remove();
+  });
+
+  entries.forEach((task, idx) => {
+    let div = grid.querySelector(`[data-id="${task.id}"]`);
+    if (div) {
+      const statusEl = div.querySelector('.thumb-status');
+      if (statusEl && statusEl.textContent !== statusLabels[task.status]) {
+        statusEl.textContent = statusLabels[task.status] || task.status;
+        statusEl.className = `thumb-status ${task.status}`;
+      }
+      const progressWrap = div.querySelector('.thumb-progress');
+      if (task.status === 'in_progress' || task.status === 'queued') {
+        if (progressWrap) {
+          const fill = progressWrap.querySelector('.thumb-progress-fill');
+          if (fill) fill.style.width = (task.progress || 0) + '%';
+        }
+      } else if (progressWrap) {
+        progressWrap.remove();
+      }
+      if (task.status === 'completed' && task.images && task.images.length > 0 && !div.querySelector('img')) {
+        const placeholder = div.querySelector('.thumb-placeholder');
+        if (placeholder) {
+          const img = document.createElement('img');
+          img.src = task.images[0];
+          placeholder.replaceWith(img);
+        }
+      }
+      return;
+    }
+
+    div = document.createElement('div');
     div.className = 'history-thumb';
+    div.dataset.id = task.id;
     div.onclick = () => openDetail(task.id);
 
     const thumbImg = (task.images && task.images.length > 0)
-      ? `<img src="${task.images[0]}" loading="lazy">`
-      : `<div style="width:100%;aspect-ratio:1;background:var(--border2);display:flex;align-items:center;justify-content:center;color:var(--text5);font-size:12px">${task.status === 'failed' ? '失败' : '生成中...'}</div>`;
+      ? `<img src="${task.images[0]}">`
+      : `<div class="thumb-placeholder" style="width:100%;aspect-ratio:1;background:var(--border2);display:flex;align-items:center;justify-content:center;color:var(--text5);font-size:12px">${task.status === 'failed' ? '失败' : '生成中...'}</div>`;
 
     const progress = (task.status === 'in_progress' || task.status === 'queued')
       ? `<div class="thumb-progress"><div class="thumb-progress-fill" style="width:${task.progress || 0}%"></div></div>`
@@ -439,7 +475,18 @@ function renderHistory() {
       <span class="thumb-status ${task.status}">${statusLabels[task.status] || task.status}</span>
       ${progress}
       <div class="thumb-prompt">${escapeHtml(task.prompt)}</div>`;
-    grid.appendChild(div);
+
+    if (idx === 0) {
+      grid.prepend(div);
+    } else {
+      const prev = entries[idx - 1];
+      const prevEl = grid.querySelector(`[data-id="${prev.id}"]`);
+      if (prevEl && prevEl.nextSibling) {
+        grid.insertBefore(div, prevEl.nextSibling);
+      } else {
+        grid.appendChild(div);
+      }
+    }
   });
 }
 
